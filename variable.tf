@@ -8,11 +8,6 @@ variable "instance_type" {
   description = "Type of instance deploy"
 }
 
-variable "instance_ami" {
-  type        = string
-  description = "id of the AMI"
-}
-
 variable "ec2_key_pair" {
   type        = string
   description = "Key to access the EC2 instance"

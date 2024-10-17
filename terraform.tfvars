@@ -1,7 +1,5 @@
 aws_region = "us-east-1"
 
-instance_ami = "ami-0ebfd941bbafe70c6"
-
 instance_type = "t2.micro"
 
 tag_name = "ec2_nginx"

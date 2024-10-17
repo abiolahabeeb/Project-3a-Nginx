@@ -13,10 +13,21 @@ provider "aws" {
   region = var.aws_region
 }
 
+# use data source to get a registered amazon linux 2023 ami
+data "aws_ami" "amzn-linux-2023-ami" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["al2023-ami-2023.*-x86_64"]
+  }
+}
+
 # EC2 instance with userdata
 resource "aws_instance" "ec2" {
-  ami           = var.instance_ami  #ami
-  instance_type = var.instance_type #instance type
+  ami           = data.aws_ami.amzn-linux-2023-ami.id #ami
+  instance_type = var.instance_type                   #instance type
 
   vpc_security_group_ids = [aws_security_group.ec2_sg.id] #sg
 
@@ -52,6 +63,14 @@ resource "aws_security_group" "ec2_sg" {
     to_port     = 80
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
 
   egress {
     from_port   = 0
